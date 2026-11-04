@@ -17,7 +17,7 @@ defmodule FuelCalculatorWeb.Router do
   scope "/", FuelCalculatorWeb do
     pipe_through :browser
 
-    get "/", PageController, :home
+    live "/", FlightLive
   end
 
   # Other scopes may use custom stacks.
