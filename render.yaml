@@ -12,5 +12,7 @@ services:
         value: 1.18.4
       - key: ERLANG_VERSION
         value: "27.3"
+      # Render's generateValue is 32 bytes; Plug's cookie store requires at
+      # least 64. Enter the output of `mix phx.gen.secret` when deploying.
       - key: SECRET_KEY_BASE
-        generateValue: true
+        sync: false
