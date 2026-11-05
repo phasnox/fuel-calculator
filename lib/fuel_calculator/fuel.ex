@@ -6,6 +6,9 @@ defmodule FuelCalculator.Fuel do
   before it, so the path is walked **in reverse**: the mass present at step *i*
   is the spacecraft mass plus the fuel burned by all later steps. Folding from
   the last step back to the first therefore yields the total fuel at the ground.
+
+  `step_fuels/2` exposes that fold per step, in chronological order, so callers
+  can compare each step's fuel against the propellant actually aboard.
   """
 
   alias FuelCalculator.Planets
@@ -23,13 +26,27 @@ defmodule FuelCalculator.Fuel do
     fuel_with_extra(mass, action, Planets.gravity(planet))
   end
 
+  @spec step_fuels(number(), [step()]) :: [
+          %{action: action(), planet: Planets.planet(), fuel: non_neg_integer()}
+        ]
+  def step_fuels(mass, steps) when is_number(mass) and is_list(steps) do
+    {fuels, _carried} =
+      steps
+      |> Enum.reverse()
+      |> Enum.reduce({[], 0}, fn {action, planet}, {acc, carried} ->
+        fuel = step_fuel(mass + carried, action, planet)
+        {[%{action: action, planet: planet, fuel: fuel} | acc], carried + fuel}
+      end)
+
+    fuels
+  end
+
   @spec total_fuel(number(), [step()]) :: non_neg_integer()
   def total_fuel(mass, steps) when is_number(mass) and is_list(steps) do
-    steps
-    |> Enum.reverse()
-    |> Enum.reduce(0, fn {action, planet}, acc ->
-      acc + step_fuel(mass + acc, action, planet)
-    end)
+    mass
+    |> step_fuels(steps)
+    |> Enum.map(& &1.fuel)
+    |> Enum.sum()
   end
 
   defp fuel_with_extra(mass, action, gravity) do
