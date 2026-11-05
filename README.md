@@ -1,5 +1,11 @@
 # FuelCalculator
 
+**Live demo:** https://fuel-calculator-s9an.onrender.com
+
+A Phoenix LiveView mission console: plan launch and landing steps, load propellant, and watch the launch stage play out. The demo runs on Render's free tier, so the first request after 15 minutes of inactivity can take about 50 seconds to wake.
+
+## Run locally
+
 To start your Phoenix server:
 
 * Run `mix setup` to install and setup dependencies
