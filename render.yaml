@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: fuel-calculator
+    runtime: elixir
+    plan: free
+    region: oregon
+    buildCommand: ./build.sh
+    startCommand: _build/prod/rel/fuel_calculator/bin/server
+    autoDeployTrigger: commit
+    envVars:
+      - key: ELIXIR_VERSION
+        value: 1.18.4
+      - key: ERLANG_VERSION
+        value: "27.3"
+      - key: SECRET_KEY_BASE
+        generateValue: true

@@ -31,6 +31,12 @@ fuel_calculator-*.tar
 # Ignore digested assets cache.
 /priv/static/cache_manifest.json
 
+# Ignore digested and precompressed copies of static files.
+/priv/static/favicon-*.ico
+/priv/static/robots-*.txt
+/priv/static/images/logo-*.svg
+/priv/static/**/*.gz
+
 # In case you use Node.js/npm, you want to ignore these.
 npm-debug.log
 /assets/node_modules/
